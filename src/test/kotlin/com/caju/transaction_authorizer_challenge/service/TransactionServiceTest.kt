@@ -1,3 +1,4 @@
+import com.caju.transaction_authorizer_challenge.exception.AccountNotFoundException
 import com.caju.transaction_authorizer_challenge.model.dto.TransactionDTO
 import com.caju.transaction_authorizer_challenge.model.enums.CategoryEnum
 import com.caju.transaction_authorizer_challenge.model.enums.FallbackEnum
@@ -14,6 +15,8 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
+import org.redisson.api.RLock
+import org.redisson.api.RedissonClient
 
 class TransactionServiceTest {
 
@@ -26,6 +29,12 @@ class TransactionServiceTest {
     @Mock
     private lateinit var transactionRepository: TransactionRepository
 
+    @Mock
+    private lateinit var redissonClient: RedissonClient
+
+    @Mock
+    private lateinit var lock: RLock
+
     @InjectMocks
     private lateinit var transactionService: TransactionService
 
@@ -36,7 +45,10 @@ class TransactionServiceTest {
     fun setUp() {
         MockitoAnnotations.openMocks(this)
 
-        // Configuração inicial de dados fictícios
+        `when`(redissonClient.getLock(anyString())).thenReturn(lock)
+        `when`(lock.tryLock()).thenReturn(true)
+        doNothing().`when`(lock).unlock()
+
         transactionDTO = TransactionDTO(
             account = "1",
             merchant = "Merchant Test",
@@ -124,7 +136,7 @@ class TransactionServiceTest {
     @Test
     fun `authorize should return error when an exception occurs`() {
         // Arrange
-        `when`(accountService.findById(1L)).thenThrow(RuntimeException("Database error"))
+        `when`(accountService.findById(1L)).thenThrow(AccountNotFoundException("Account not found"))
 
         // Act
         val result = transactionService.authorize(transactionDTO)
