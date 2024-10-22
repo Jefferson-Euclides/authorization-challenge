@@ -1,5 +1,5 @@
 
-# Caju Transaction Authorizer
+# Transaction Authorizer
 
 Autorizador de transações de cartão de crédito.
 
