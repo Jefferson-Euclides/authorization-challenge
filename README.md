@@ -94,7 +94,7 @@ A aplicação estará disponível na porta 8080.
 
 Para explorar os endpoints da API e suas respectivas descrições, você pode acessar a documentação gerada automaticamente pelo Swagger:
 
-URL da documentação Swagger: http://localhost:8080/swagger-ui.html
+URL da documentação Swagger: http://localhost:8080/api/swagger-ui.html
 
 #### Testar a aplicação:
 
