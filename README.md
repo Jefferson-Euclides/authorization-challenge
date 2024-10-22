@@ -77,7 +77,6 @@ Clone o repositório para sua máquina local usando o seguinte comando:
 
 ```bash
 git clone https://github.com/Jefferson-Euclides/authorization-challenge.git
-cd authorization-challenge
 ```
 
 #### Rodar o Docker Compose:
